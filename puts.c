@@ -6,7 +6,7 @@
 /*   By: kscordel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 17:40:04 by kscordel          #+#    #+#             */
-/*   Updated: 2022/12/27 17:58:10 by kscordel         ###   ########.fr       */
+/*   Updated: 2023/01/03 17:40:27 by kscordel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,9 @@
 
 int	ft_putstr(char *str)
 {
-	int	i;
-
 	if (!str)
 		return (0);
-	i = ft_strlen(str);
-	write(1, str, i);
-	return (i);
+	return (write(1, str, ft_strlen(str)));
 }
 
 int	ft_putnbr_base(int nbr, char *base, int b)

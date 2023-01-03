@@ -6,7 +6,7 @@
 /*   By: kscordel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 17:38:36 by kscordel          #+#    #+#             */
-/*   Updated: 2022/12/27 18:06:18 by kscordel         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:39:34 by kscordel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 int	ft_putp(unsigned long p)
 {
 	if (!p)
-	{
-		write(1, "nil", 3);
-		return (3);
-	}
+		return (write(1, "nil", 3));
 	else
 	{
 		write(1, "0x", 2);
@@ -29,10 +26,7 @@ int	ft_putp(unsigned long p)
 int	ft_instruct(char *pindex, int *len, va_list ap)
 {
 	if (pindex[i] == 'c')
-	{
-		write(1, va_arg(ap, char), 1);
-		*len = *len + 1;
-	}
+		*len = *len + ft_putchar(va_arg(ap, char));
 	else if (pindex[i] == 's')
 		*len = *len + ft_putstr(va_arg(ap, char));
 	else if (pindex[i] == 'p')
@@ -46,10 +40,7 @@ int	ft_instruct(char *pindex, int *len, va_list ap)
 	else if (pindex[i] == 'X')
 		*len = *len + ft_putnbr_base(va_arg(ap, int), "01234567789ABCDEF", 16);
 	else if (pindex[i] == '%')
-	{
-		write(1, '%', 1);
-		*len = *len + 1;
-	}
+		*len = *len + write(1, '%', 1);
 	return (i);
 }
 
