@@ -10,30 +10,38 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-RM = rm -f
+
 NAME = libftprintf.a
 
-SRC =	printf.c
-	puts.c
+SRC = ft_printf \
+	puts \
+	
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(addsuffix .o, ${SRC})
+CC = cc 
+HEADER = .
+FLAGS = -Wall -Werror -Wextra
+LIBFT_DIR = ./libft/
+	
+all: $(NAME)
 
-.c.o:
-			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+%.o:%.c
+	$(CC) -c $(FLAGS) $< -o $@ -I${HEADER}
 
-%(NAME):	${OBJ}
-			ar rc ${NAME} ${OBJ} printf.h
-
-all:		${NAME}
-
+$(NAME): ${LIBFT_DIR}libft.a ${OBJ}
+		cp ${LIBFT_DIR}libft.a ./${NAME}
+		ar rcs ${NAME} ${OBJ}
+				
+${LIBFT_DIR}libft.a:
+		make all -C ${LIBFT_DIR}
+		
 clean:
-			${RM} ${OBJ}
+		rm -f ${OBJ}
+		make clean -C ${LIBFT_DIR}		
+fclean: clean
+		rm -f $(NAME)
+		make fclean -C ${LIBFT_DIR}
 
-fclean:		clean
-			${RM} ${NAME}
+re: fclean all
 
-re:		fclean all
-
-.PHONY:		all clean fclean re
+.PHONY: all clean fclean re
