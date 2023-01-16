@@ -6,7 +6,7 @@
 /*   By: kscordel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 17:38:36 by kscordel          #+#    #+#             */
-/*   Updated: 2023/01/06 12:21:31 by kscordel         ###   ########.fr       */
+/*   Updated: 2023/01/16 18:05:45 by kscordel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,28 @@ int	ft_putp(unsigned long p)
 
 int	ft_instruct(const char *pindex, int *len, va_list ap)
 {
+	int	x;
+
+	x = 0;
 	if (pindex[1] == 'c')
-		*len = *len + ft_putchar(va_arg(ap, int));
+		x = 1 + ft_putchar(va_arg(ap, int));
 	else if (pindex[1] == 's')
-		*len = *len + ft_putstr(va_arg(ap, char *));
+		x = 1 + ft_putstr(va_arg(ap, char *));
 	else if (pindex[1] == 'p')
-		*len = *len + ft_putp(va_arg(ap, long unsigned int));
+		x = 1 + ft_putp(va_arg(ap, long unsigned int));
 	else if (pindex[1] == 'd' || pindex[1] == 'i')
-		*len = *len + ft_putnbr(va_arg(ap, int));
+		x = 1 + ft_putnbr(va_arg(ap, int));
 	else if (pindex[1] == 'u')
-		*len = *len + ft_putnbru(va_arg(ap, unsigned int));
+		x = 1 + ft_putnbru(va_arg(ap, unsigned int));
 	else if (pindex[1] == 'x')
-		*len = *len + ft_putnbru_base(va_arg(ap, unsigned int), MINUSCULE);
+		x = 1 + ft_putnbru_base(va_arg(ap, unsigned int), MINUSCULE);
 	else if (pindex[1] == 'X')
-		*len = *len + ft_putnbru_base(va_arg(ap, unsigned int), MAJUSCULE);
+		x = 1 + ft_putnbru_base(va_arg(ap, unsigned int), MAJUSCULE);
 	else if (pindex[1] == '%')
-		*len = *len + ft_putchar('%');
+		x = 1 + ft_putchar('%');
+	if (!x)
+		return (0);
+	*len = *len + x - 1;
 	return (2);
 }
 
@@ -49,6 +55,7 @@ int	ft_printf(const char *format, ...)
 	va_list		ap;
 	int			i;
 	int			len;
+	int			r;
 
 	i = 0;
 	len = 0;
@@ -57,14 +64,16 @@ int	ft_printf(const char *format, ...)
 		return (0);
 	while (format[i])
 	{
+		r = 0;
 		if (format[i] == '%')
-			i += ft_instruct(&format[i], &len, ap);
-		else
+			r = ft_instruct(&format[i], &len, ap);
+		if (!r)
 		{
 			ft_putchar(format[i]);
 			i++;
 			len++;
 		}
+		i += r; 
 	}
 	va_end(ap);
 	return (len);
