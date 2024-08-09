@@ -1,3 +1,3 @@
-#Une version de printf simplifier
+# Une version de printf simplifier
 
 Elle gere les conversions suivantes > cspdiuxX%
